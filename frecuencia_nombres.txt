@@ -1,0 +1,11 @@
+Álvaro: 1
+Ana: 3
+Carlos: 3
+Isabel: 2
+José: 2
+Juan: 3
+Laura: 2
+María: 3
+Miguel: 2
+Pedro: 3
+Sofía: 2
