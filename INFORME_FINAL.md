@@ -4,6 +4,8 @@
 
 Este proyecto implementa un sistema completo de procesamiento de nombres que incluye ordenamiento alfabético, análisis de frecuencias, filtrado, exportación de datos y manejo robusto de errores. El proyecto está desarrollado en Python y utiliza técnicas avanzadas de manejo de texto con soporte para caracteres especiales y acentos.
 
+![UI.png](capturas/UI.png)
+
 ## Estructura del Proyecto
 
 ```
@@ -61,8 +63,7 @@ archivo_vacio.txt)                  # Archivos para testing de errores
 - Compatibilidad con diferentes sistemas de codificación
 - Validación de datos de entrada
 
-**CAPTURA REQUERIDA:** Ejecutar `python ordenar_nombres.py` y capturar la salida completa
-
+![python ordenar_nombres.png](capturas/python%20ordenar_nombres.png)
 ---
 
 ### 2. Análisis de Frecuencias (`contar_frecuencia_nombres.py`)
@@ -97,8 +98,7 @@ Sofía: 2
 - Manejo de nombres con acentos en las claves del diccionario
 - Optimización del código para reutilizar funciones existentes
 
-**CAPTURA REQUERIDA:** Ejecutar `python contar_frecuencia_nombres.py` y capturar la salida
-
+![python contar_frecuencia_nombres.png](capturas/python%20contar_frecuencia_nombres.png)
 ---
 
 ### 3. Exportación de Datos (`exportar_frecuencias.py`)
@@ -132,8 +132,7 @@ Sofía: 2
 - Manejo de codificación en archivos de salida
 - Integración con funciones existentes
 
-**CAPTURA REQUERIDA:** Mostrar el contenido del archivo `frecuencia_nombres.txt` generado
-
+![frecuencia_nombres.png](capturas/frecuencia_nombres.png)
 ---
 
 ### 4. Filtrado por Condición (`filtrar_nombres_largos.py`)
@@ -167,8 +166,7 @@ Nombres que cumplen la condición:
 - Validación correcta de la condición de filtrado
 - Presentación clara de resultados
 
-**CAPTURA REQUERIDA:** Ejecutar `python filtrar_nombres_largos.py` y capturar la salida completa
-
+![python filtrar_nombres_largos.png](capturas/python%20filtrar_nombres_largos.png)
 ---
 
 ### 5. Ordenamiento por Longitud (`ordenar_por_longitud.py`)
@@ -201,8 +199,7 @@ Longitud promedio del primer nombre: 4.9 caracteres
 - Análisis estadístico de los datos
 - Presentación de resultados ordenados
 
-**CAPTURA REQUERIDA:** Ejecutar `python ordenar_por_longitud.py` y capturar la salida completa
-
+![python ordenar_por_longitud.png](capturas/python%20ordenar_por_longitud.png)
 ---
 
 ### 6. Capitalización de Títulos (`capitalizar_titulo.py`)
@@ -230,8 +227,7 @@ Resultado: el Señor de los Anillos y la Comunidad del Anillo
 - Manejo de signos de puntuación
 - Casos edge en la capitalización
 
-**CAPTURA REQUERIDA:** Ejecutar `python capitalizar_titulo.py` y capturar los ejemplos
-
+![python capitalizar_titulo.png](capturas/python%20capitalizar_titulo.png)
 ---
 
 ## Manejo de Errores Implementado
@@ -250,6 +246,7 @@ Resultado: el Señor de los Anillos y la Comunidad del Anillo
 **Archivo no existe:**
 ```
 [ERROR] El archivo 'archivo_inexistente.txt' no existe.
+   Verifica que la ruta del archivo sea correcta.
 ```
 
 **Archivo vacío:**
@@ -257,17 +254,74 @@ Resultado: el Señor de los Anillos y la Comunidad del Anillo
 [ERROR] El archivo 'archivo_vacio.txt' está vacío.
 ```
 
-**Datos inválidos:**
+**Archivo con datos inválidos (strings extraños):**
 ```
-[ADVERTENCIA] Se encontraron 5 líneas con datos inválidos:
-   - '   '
-   - '   '
-   - '   '
-   - '   '
-   - '   '
+[ADVERTENCIA] Se encontraron 3 líneas con datos inválidos:
+   (Strings extraños, formato incorrecto, o solo espacios/saltos de línea)
+   - '<?Assistant?>'
+   - '<?tool?calls?begin?><?tool?call?begin?>'
+   - 'run_terminal_cmd'
+
+[INFO] Sin embargo, se encontraron 2 nombres válidos que serán procesados.
+
+[EXITO] Nombres ordenados alfabéticamente:
+========================================
+ 1. Ana García
+ 2. Juan Pérez
 ```
 
-**CAPTURA REQUERIDA:** Probar diferentes escenarios de error y capturar los mensajes
+**Archivo con solo espacios y saltos de línea:**
+```
+[ADVERTENCIA] Se encontraron 1 líneas con datos inválidos:
+   (Strings extraños, formato incorrecto, o solo espacios/saltos de línea)
+   - '\n\n   \n\n   \n\n'
+
+[ERROR] No se encontraron nombres válidos en el archivo 'archivo_invalido.txt'.
+```
+
+**Error de codificación:**
+```
+[ERROR] No se pudo decodificar el archivo 'archivo_corrupto.txt'.
+   Error de codificación: 'utf-8' codec can't decode byte 0xff
+   El archivo puede estar en una codificación diferente a UTF-8.
+```
+
+**Error de permisos:**
+```
+[ERROR] No tienes permisos para leer el archivo 'archivo_protegido.txt'.
+```
+
+**Mensaje genérico mejorado (GUI):**
+```
+[ERROR] No se pudieron obtener nombres del archivo.
+
+Posibles causas:
+• El archivo está vacío
+• El archivo contiene solo espacios o líneas vacías
+• El archivo no tiene el formato correcto (debe ser 'Nombre Apellido')
+• Error de permisos o codificación del archivo
+```
+
+**Validación mejorada de formato:**
+```
+[ADVERTENCIA] Se encontraron 3 líneas con datos inválidos:
+   (Strings extraños, formato incorrecto, o solo espacios/saltos de línea)
+   - '<?Assistant?>'
+   - '<?tool?calls?begin?><?tool?call?begin?>'
+   - 'run_terminal_cmd'
+
+[INFO] Sin embargo, se encontraron 2 nombres válidos que serán procesados.
+
+[EXITO] Nombres ordenados alfabéticamente:
+========================================
+ 1. Ana García
+ 2. Juan Pérez
+```
+
+![Captura de pantalla 2025-10-07 172521.png](capturas/Captura%20de%20pantalla%202025-10-07%20172521.png)
+![Captura de pantalla 2025-10-07 181132.png](capturas/Captura%20de%20pantalla%202025-10-07%20181132.png)
+![Captura de pantalla 2025-10-07 181149.png](capturas/Captura%20de%20pantalla%202025-10-07%20181149.png)
+![Captura de pantalla 2025-10-07 181214.png](capturas/Captura%20de%20pantalla%202025-10-07%20181214.png)
 
 ---
 
@@ -343,12 +397,6 @@ nombres.txt → ordenar_nombres.py → [otros scripts]
 - Sistemas de manejo de errores robustos
 - Arquitectura modular de software
 - Validación y filtrado de datos
-
-### Mejoras Futuras:
-- Implementación de tests unitarios
-- Interfaz gráfica de usuario
-- Procesamiento de archivos más grandes
-- Análisis estadístico más avanzado
 
 ---
 

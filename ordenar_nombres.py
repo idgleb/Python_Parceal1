@@ -23,6 +23,16 @@ def ordenar_nombres_alfabeticamente(archivo_entrada):
     try:
         # Verificar si el archivo existe
         import os
+        import sys
+        import string
+
+        # Impresión segura (evita UnicodeEncodeError en consolas Windows)
+        def safe_print(text: str) -> None:
+            encoding = getattr(sys.stdout, "encoding", None) or "utf-8"
+            try:
+                print(text)
+            except UnicodeEncodeError:
+                print(text.encode(encoding, errors="replace").decode(encoding, errors="replace"))
         if not os.path.exists(archivo_entrada):
             print(f"[ERROR] El archivo '{archivo_entrada}' no existe.")
             return []
@@ -38,7 +48,7 @@ def ordenar_nombres_alfabeticamente(archivo_entrada):
         
         # Verificar si se pudieron leer líneas
         if not lineas:
-            print(f"[ERROR] No se pudieron leer líneas del archivo '{archivo_entrada}'.")
+            safe_print(f"[ERROR] No se pudieron leer líneas del archivo '{archivo_entrada}'.")
             return []
         
         # Limpiar líneas vacías y espacios en blanco
@@ -46,8 +56,8 @@ def ordenar_nombres_alfabeticamente(archivo_entrada):
         
         # Verificar si hay nombres válidos después de la limpieza
         if not nombres:
-            print(f"[ERROR] El archivo '{archivo_entrada}' no contiene datos válidos.")
-            print("   El archivo puede contener solo líneas vacías o espacios en blanco.")
+            safe_print(f"[ERROR] El archivo '{archivo_entrada}' no contiene datos válidos.")
+            safe_print("   El archivo puede contener solo líneas vacías o espacios en blanco.")
             return []
         
         # Validar que los nombres tengan formato válido (al menos un carácter alfanumérico)
@@ -55,28 +65,44 @@ def ordenar_nombres_alfabeticamente(archivo_entrada):
         nombres_invalidos = []
         
         for nombre in nombres:
-            # Verificar si el nombre contiene al menos un carácter alfanumérico
-            # y no es solo espacios, saltos de línea o caracteres especiales
             nombre_limpio = nombre.strip()
-            # Verificar que tenga al menos 2 caracteres alfanuméricos y no sea solo caracteres especiales
-            caracteres_alfanum = sum(1 for c in nombre_limpio if c.isalnum())
-            if (nombre_limpio and 
-                caracteres_alfanum >= 2 and 
-                not nombre_limpio.isspace() and
-                '\n' not in nombre_limpio and
-                '\r' not in nombre_limpio):
-                nombres_validos.append(nombre)
+            
+            # Reglas estrictas para formato "Nombre Apellido":
+            # - Solo letras, espacios y acentos (sin números, símbolos, barras invertidas)
+            # - Al menos 2 palabras separadas por espacios
+            # - Cada palabra debe tener al menos 2 letras
+            tiene_barras = "\\" in nombre_limpio
+            solo_letras_espacios = all(c.isalpha() or c.isspace() or c in "áéíóúüñÁÉÍÓÚÜÑ" for c in nombre_limpio)
+            palabras = [palabra.strip() for palabra in nombre_limpio.split() if palabra.strip()]
+            palabras_validas = all(len(palabra) >= 2 and palabra.isalpha() for palabra in palabras)
+            
+            es_valido = (
+                bool(nombre_limpio)
+                and not tiene_barras
+                and solo_letras_espacios
+                and len(palabras) >= 2
+                and palabras_validas
+            )
+
+            if es_valido:
+                nombres_validos.append(nombre_limpio)
             else:
                 nombres_invalidos.append(nombre)
         
         # Mostrar advertencias sobre nombres inválidos si los hay
         if nombres_invalidos:
-            print(f"[ADVERTENCIA] Se encontraron {len(nombres_invalidos)} líneas con datos inválidos:")
+            safe_print(f"[ADVERTENCIA] Se encontraron {len(nombres_invalidos)} líneas con datos inválidos:")
+            safe_print("   (Strings extraños, formato incorrecto, o solo espacios/saltos de línea)")
             for nombre_invalido in nombres_invalidos[:5]:  # Mostrar máximo 5 ejemplos
-                print(f"   - '{nombre_invalido}'")
+                safe_print(f"   - '{str(nombre_invalido)}'")
             if len(nombres_invalidos) > 5:
-                print(f"   ... y {len(nombres_invalidos) - 5} más.")
-            print()
+                safe_print(f"   ... y {len(nombres_invalidos) - 5} más.")
+            safe_print("")
+            
+            # Si hay nombres válidos, mostrar mensaje de éxito parcial
+            if nombres_validos:
+                safe_print(f"[INFO] Sin embargo, se encontraron {len(nombres_validos)} nombres válidos que serán procesados.")
+                safe_print("")
         
         # Verificar si quedan nombres válidos después del filtrado
         if not nombres_validos:
@@ -86,10 +112,10 @@ def ordenar_nombres_alfabeticamente(archivo_entrada):
         # Ordenar usando la función de normalización personalizada
         nombres_ordenados = sorted(nombres_validos, key=normalizar_para_ordenar)
         
-        print("[EXITO] Nombres ordenados alfabéticamente:")
-        print("=" * 40)
+        safe_print("[EXITO] Nombres ordenados alfabéticamente:")
+        safe_print("=" * 40)
         for i, nombre in enumerate(nombres_ordenados, 1):
-            print(f"{i:2d}. {nombre}")
+            safe_print(f"{i:2d}. {nombre}")
         
         return nombres_ordenados
         
@@ -109,8 +135,14 @@ def ordenar_nombres_alfabeticamente(archivo_entrada):
         print(f"[ERROR] Error del sistema operativo al acceder al archivo '{archivo_entrada}': {e}")
         return []
     except Exception as e:
-        print(f"[ERROR] Error inesperado al procesar el archivo '{archivo_entrada}': {e}")
-        print(f"   Tipo de error: {type(e).__name__}")
+        try:
+            print(f"[ERROR] Error inesperado al procesar el archivo '{archivo_entrada}': {e}")
+            print(f"   Tipo de error: {type(e).__name__}")
+        except UnicodeEncodeError:
+            enc = (getattr(sys.stdout, 'encoding', None) or 'utf-8')
+            msg = str(e).encode(enc, errors='replace').decode(enc, errors='replace')
+            print(f"[ERROR] Error inesperado al procesar el archivo '{archivo_entrada}': {msg}")
+            print(f"   Tipo de error: {type(e).__name__}")
         return []
 
 if __name__ == "__main__":
