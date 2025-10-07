@@ -1,5 +1,15 @@
 # INFORME FINAL - Proyecto de Procesamiento de Nombres
 
+**Información Académica:**
+
+• **Estudiante:** Ursol Gleb  
+• **Carrera:** Analista de Sistemas  
+• **Escuela:** Da Vinci  
+• **Materia:** Análisis y Metodología de Sistemas  
+• **Profesor:** Gabriel Ernesto Cavasso
+
+**Repositorio GitHub:** [https://github.com/idgleb/Python_Parceal1](https://github.com/idgleb/Python_Parceal1)
+
 ## Resumen del Proyecto
 
 Este proyecto implementa un sistema completo de procesamiento de nombres que incluye ordenamiento alfabético, análisis de frecuencias, filtrado, exportación de datos y manejo robusto de errores. El proyecto está desarrollado en Python y utiliza técnicas avanzadas de manejo de texto con soporte para caracteres especiales y acentos.
@@ -318,7 +328,6 @@ Posibles causas:
  2. Juan Pérez
 ```
 
-![Captura de pantalla 2025-10-07 172521.png](capturas/Captura%20de%20pantalla%202025-10-07%20172521.png)
 ![Captura de pantalla 2025-10-07 181132.png](capturas/Captura%20de%20pantalla%202025-10-07%20181132.png)
 ![Captura de pantalla 2025-10-07 181149.png](capturas/Captura%20de%20pantalla%202025-10-07%20181149.png)
 ![Captura de pantalla 2025-10-07 181214.png](capturas/Captura%20de%20pantalla%202025-10-07%20181214.png)
